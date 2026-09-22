@@ -5,6 +5,7 @@ import { version } from "../package.json";
 import enUS from "./i18n/dark-souls-3/en-US.json";
 import jaJP from "./i18n/dark-souls-3/ja-JP.json";
 import zhCN from "./i18n/dark-souls-3/zh-CN.json";
+import zhTW from "./i18n/dark-souls-3/zh-TW.json";
 
 import flex from "./components/flex.module.scss";
 import styles from "./app.module.scss";
@@ -13,27 +14,28 @@ import { Language } from "./domains/language";
 
 const { host, pathname: path } = location;
 const site = `${host}${path}`;
-let mode = '';
+let mode = "";
 switch (site) {
   case "smcnabb.github.io/dark-souls-cheat-sheet/":
-    mode = 'DS';
+    mode = "DS";
     break;
   case "smcnabb.github.io/dark-souls-2-cheat-sheet/":
-    mode = 'DS2';
+    mode = "DS2";
     break;
   case "zkjellberg.github.io/dark-souls-3-cheat-sheet/":
-    mode = 'DS3';
+    mode = "DS3";
     break;
 }
 
 export function App() {
   const [primaryLanguage, setPrimaryLanguage] = useState<Language>("en-US");
-  const [secondaryLanguage, setSecondaryLanguage] = useState<Language | ''>('');
+  const [secondaryLanguage, setSecondaryLanguage] = useState<Language | "">("");
 
   const dictionaries: Dictionaries = {
     "en-US": enUS,
     "ja-JP": jaJP,
     "zh-CN": zhCN,
+    "zh-TW": zhTW,
   };
 
   const languageOptions: SelectProps<Language>["options"] = [
@@ -55,12 +57,12 @@ export function App() {
     },
   ];
 
-  const secondaryLanguageOptions: SelectProps<Language | ''>["options"] = [
+  const secondaryLanguageOptions: SelectProps<Language | "">["options"] = [
     {
-      value: '',
+      value: "",
       label: "无",
     },
-    ...languageOptions
+    ...languageOptions,
   ];
 
   const classNames: string[] = [styles.app];
@@ -150,7 +152,7 @@ export function App() {
         }
       }
 
-      if (secondaryLanguage != '') {
+      if (secondaryLanguage != "") {
         const secondaryDictionary = dictionaries[secondaryLanguage];
         if (secondaryDictionary != null) {
           const translated = secondaryDictionary[key];
@@ -159,8 +161,8 @@ export function App() {
           }
         }
       }
-      
-      text.textContent = content
+
+      text.textContent = content;
     }
   }
 
@@ -171,24 +173,22 @@ export function App() {
         <div className={styles.version}>v{version}</div>
       </div>
 
-      <div className={styles['form-item']}>
+      <div className={styles["form-item"]}>
         <label className={styles["form-item-label"]}>主要语言</label>
-        <div className={styles['form-item-value']}>
+        <div className={styles["form-item-value"]}>
           <Select<Language>
             value={primaryLanguage}
             options={languageOptions}
             onChange={(value) => {
-              if (value != "") {
-                setPrimaryLanguage(value);
-              }
+              setPrimaryLanguage(value);
             }}
           />
         </div>
       </div>
 
-      <div className={styles['form-item']}>
+      <div className={styles["form-item"]}>
         <label className={styles["form-item-label"]}>次要语言</label>
-        <div className={styles['form-item-value']}>
+        <div className={styles["form-item-value"]}>
           <Select
             value={secondaryLanguage}
             options={secondaryLanguageOptions}
