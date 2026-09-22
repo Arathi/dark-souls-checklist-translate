@@ -1,0 +1,57 @@
+@use "./components/flex.module.scss";
+
+.app {
+  --background-color: rgba(255, 255, 255, 0.9);
+  --border-color: rgba(200, 200, 200, 0.9);
+
+  @extend .column;
+  gap: 8px;
+
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 999;
+
+  width: 200px;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.dark-souls, .dark-souls-2 {
+  margin: 8px;
+}
+
+.dark-souls-3 {
+  margin-top: 58px;
+  margin-right: 8px;
+}
+
+.mode {
+  flex: 1;
+  text-align: left;
+  font-weight: bold;
+}
+
+.version {
+  color: gray;
+  text-align: right;
+}
+
+.form-item {
+  @extend .row;
+  gap: 8px;
+
+  .form-item-label {
+    //
+  }
+
+  .form-item-value {
+    flex: 1;
+
+    select {
+      width: 100%;
+    }
+  }
+}
