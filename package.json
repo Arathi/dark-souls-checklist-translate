@@ -16,7 +16,7 @@
     "@preact/preset-vite": "^2.10.6",
     "@types/node": "^24.13.6",
     "oxfmt": "^0.68.0",
-    "oxlint": "^1.84.0",
+    "oxlint": "^1.85.0",
     "sass": "^1.104.1",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
