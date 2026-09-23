@@ -73,6 +73,47 @@ async function generate(dir: string) {
     const place0 = parseContainer(containers["Place name"], "place");
     const place1 = parseContainer(containers["Place name_dlc1"], "place");
     const place2 = parseContainer(containers["Place name_dlc2"], "place");
+    const gestureIds = [
+      "301001",
+      "301002",
+      "301003",
+      "301004",
+      "301005",
+      "301006",
+      "301007",
+      "301008",
+      "301009",
+      "301010",
+      "301011",
+      "301012",
+      "301013",
+      "301014",
+      "301015",
+      "301016",
+      "301117",
+      "301118",
+      "301119",
+      "301120",
+      "301121",
+      "301122",
+      "301123",
+      "301124",
+      "301125",
+      "301126",
+      "301127",
+      "301128",
+      "301129",
+      "301130",
+      "301131",
+      "301132",
+      "301133",
+      "301134",
+      "301136",
+      "301137",
+      "301138",
+      "301139",
+    ];
+    const gesture = parseContainer(containers["FDP_menu text"], "gesture", gestureIds);
 
     const patch = patches[language] ?? {};
 
@@ -88,6 +129,7 @@ async function generate(dir: string) {
       ...place0,
       ...place1,
       ...place2,
+      ...gesture,
       ...patch,
     };
     dictionaries[language] = dictionary;

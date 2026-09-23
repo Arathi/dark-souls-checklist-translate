@@ -120,11 +120,6 @@ export function App() {
 
     const mapper: Record<string, string> = {};
     for (const [key, value] of Object.entries(dictionary)) {
-      // switch (key) {
-      //   case "accessory/20360/name":
-      //     console.info("");
-      //     continue;
-      // }
       let text = value.trim();
       text = text.toLowerCase();
       if (text.length > 0) {
@@ -133,8 +128,14 @@ export function App() {
     }
 
     const links = document.querySelectorAll<HTMLAnchorElement>("a");
-    for (const link of links) {
-      const value = link.textContent ?? "";
+    const strongs = document.querySelectorAll<HTMLElement>("ul#Master_of_Expression_col strong");
+    const nodes = [
+      ...links,
+      ...strongs,
+    ];
+
+    for (const node of nodes) {
+      const value = node.textContent ?? "";
       let text = value.trim();
       switch (text) {
         case "Pickle Pee, Pump-a-Rum Crow":
@@ -178,7 +179,7 @@ export function App() {
 
       const key = mapper[text];
       if (key != null) {
-        link.setAttribute("data-dict-key", key);
+        node.setAttribute("data-dict-key", key);
       }
     }
   }
