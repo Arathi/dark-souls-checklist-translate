@@ -150,8 +150,8 @@ async function generateDictionaries(
 async function main() {
   const workDir = process.cwd();
   const baseDir = resolve(workDir, "data");
-  const game = 2;
-  await generateDictionaries(baseDir, game);
+  await generateDictionaries(baseDir, 1);
+  await generateDictionaries(baseDir, 2);
 }
 
 main();
