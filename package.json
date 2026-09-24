@@ -15,11 +15,12 @@
   "devDependencies": {
     "@preact/preset-vite": "^2.10.6",
     "@types/node": "^24.13.6",
-    "oxfmt": "^0.68.0",
+    "@xmldom/xmldom": "^0.9.12",
+    "oxfmt": "^0.70.0",
     "oxlint": "^1.85.0",
-    "sass": "^1.104.1",
+    "sass": "^1.105.0",
     "tsx": "^4.23.15",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vite": "^8.3.0",
     "vite-plugin-monkey": "^8.1.1"
   }
