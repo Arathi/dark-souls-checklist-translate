@@ -9,10 +9,18 @@ import type {
   Entry,
   Language,
 } from "./dark-souls-documents";
-
 import { LANGUAGES, CATEGORIES } from "./dark-souls-documents";
 
 type Dictionary = Record<string, string>;
+type Word = {
+  game: Game;
+  index: number;
+  chinese: string;
+  japanese: string;
+  english: string;
+};
+type NPC = Word;
+type Place = Word;
 
 export async function loadDocument(
   baseDir: string,
@@ -68,7 +76,7 @@ async function buildDictionary(
   categories: Category[] = CATEGORIES,
   properties: Property[] = ["name"],
 ): Promise<Dictionary> {
-  const dictionary: Record<string, string> = {};
+  let dictionary: Record<string, string> = {};
   for (const category of categories) {
     for (const property of properties) {
       const entries = await loadDocument(
@@ -87,6 +95,81 @@ async function buildDictionary(
       });
     }
   }
+  const npcs = await loadNPCs(baseDir, language, game);
+  const places = await loadPlaces(baseDir, language, game);
+  dictionary = {
+    ...dictionary,
+    ...npcs,
+    ...places,
+  };
+  return dictionary;
+}
+
+async function loadNPCs(
+  baseDir: string,
+  language: Language,
+  game: Game,
+  fileName: string = "npcs.json",
+) {
+  const path = resolve(baseDir, fileName);
+  const json = await readFile(path, { encoding: 'utf-8' });
+  const items = JSON.parse(json) as NPC[];
+  const dictionary: Record<string, string> = {};
+
+  for (const item of items) {
+    if (item.game != game) continue;
+    const key = `npc:${item.index}/name`;
+    let name = `[NPC_${item.index}_NAME]`;
+    switch (language) {
+      case "chn":
+        name = item.chinese;
+        break;
+      case "jap":
+        name = item.japanese;
+        break;
+      case "eng":
+        name = item.english;
+        break;
+    }
+    dictionary[key] = name;
+  }
+
+  const amount = Object.keys(dictionary).length;
+  console.info(`加载 DS${game} ${language} NPC名称 ${amount} 个`);
+  return dictionary;
+}
+
+async function loadPlaces(
+  baseDir: string,
+  language: Language,
+  game: Game,
+  fileName: string = "maps.json",
+) {
+  const path = resolve(baseDir, fileName);
+  const json = await readFile(path, { encoding: 'utf-8' });
+  const items = JSON.parse(json) as Place[];
+  const dictionary: Record<string, string> = {};
+
+  for (const item of items) {
+    if (item.game != game) continue;
+    const key = `place:${item.index}/name`;
+    let name = `[PLACE_${item.index}_NAME]`;
+    switch (language) {
+      case "chn":
+        name = item.chinese;
+        break;
+      case "jap":
+        name = item.japanese;
+        break;
+      case "eng":
+        name = item.english;
+        break;
+    }
+    dictionary[key] = name;
+  }
+
+  const amount = Object.keys(dictionary).length;
+  console.info(`加载 DS${game} ${language} 地名 ${amount} 个`);
   return dictionary;
 }
 
@@ -95,7 +178,7 @@ async function generateDictionary(
   language: Language,
   game: Game,
 ) {
-  const dictionary = await buildDictionary(
+  let dictionary = await buildDictionary(
     baseDir,
     language,
     game,
@@ -133,7 +216,7 @@ async function generateDictionary(
 
   const fileName = `${locate}.json`;
   const path = resolve(baseDir, subDir, fileName);
-  const content = JSON.stringify(dictionary);
+  const content = JSON.stringify(dictionary, null, '  ');
   await writeFile(path, content);
 }
 

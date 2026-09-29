@@ -43,16 +43,16 @@ async function generate(dir: string) {
 
   const patches: Dictionaries = {
     "engUS": {
-      "magic/1740000": "Pestilent Mist",
+      "magic:1740000/name": "Pestilent Mist",
     },
     "jpnJP": {
-      "magic/1740000": "致死の白霧",
+      "magic:1740000/name": "致死の白霧",
     },
     "zhoCN": {
-      "magic/1740000": "致命白雾",
+      "magic:1740000/name": "致命白雾",
     },
     "zhoTW": {
-      "magic/1740000": "致命白霧",
+      "magic:1740000/name": "致命白霧",
     },
   };
 
@@ -62,17 +62,17 @@ async function generate(dir: string) {
     const l10n = data.languages[language];
     const containers = l10n.containers;
 
-    const accessory = parseEntries(l10n.accessory, "name", "accessory");
-    const armor = parseEntries(l10n.armor, "name", "armor");
-    const item = parseEntries(l10n.item, "name", "item");
-    const magic = parseEntries(l10n.magic, "name", "magic");
-    const weapon = parseEntries(l10n.weapon, "name", "weapon");
-    const npc0 = parseContainer(containers["NPC name"], "npc");
-    const npc1 = parseContainer(containers["NPC name_dlc1"], "npc");
-    const npc2 = parseContainer(containers["NPC name_dlc2"], "npc");
-    const place0 = parseContainer(containers["Place name"], "place");
-    const place1 = parseContainer(containers["Place name_dlc1"], "place");
-    const place2 = parseContainer(containers["Place name_dlc2"], "place");
+    const accessory = parseEntries(l10n.accessory, "name", "accessory:", "/name");
+    const armor = parseEntries(l10n.armor, "name", "armor:", "/name");
+    const item = parseEntries(l10n.item, "name", "item:", "/name");
+    const magic = parseEntries(l10n.magic, "name", "magic:", "/name");
+    const weapon = parseEntries(l10n.weapon, "name", "weapon:", "/name");
+    const npc0 = parseContainer(containers["NPC name"], "npc:", "/name");
+    const npc1 = parseContainer(containers["NPC name_dlc1"], "npc:", "/name");
+    const npc2 = parseContainer(containers["NPC name_dlc2"], "npc:", "/name");
+    const place0 = parseContainer(containers["Place name"], "place:", "/name");
+    const place1 = parseContainer(containers["Place name_dlc1"], "place:", "/name");
+    const place2 = parseContainer(containers["Place name_dlc2"], "place:", "/name");
     const gestureIds = [
       "301001",
       "301002",
@@ -113,7 +113,7 @@ async function generate(dir: string) {
       "301138",
       "301139",
     ];
-    const gesture = parseContainer(containers["FDP_menu text"], "gesture", gestureIds);
+    const gesture = parseContainer(containers["FDP_menu text"], "gesture:", "/name", gestureIds);
 
     const patch = patches[language] ?? {};
 
@@ -146,10 +146,6 @@ async function generate(dir: string) {
     for (const key in dictionary) {
       keys.add(key);
     }
-
-    // const outputFileName = `${locate}.json`;
-    // await output(dir, outputFileName, dictionary);
-    // console.info(`${outputFileName} 导出完成`);
   }
 
   keys.forEach((key) => {
@@ -191,6 +187,7 @@ function parseEntries(
   entries: Entries,
   property: EntryProperty,
   prefix: string,
+  suffix: string,
   ids: string[] = [],
 ) {
   const dictionary: Record<string, string> = {};
@@ -210,6 +207,7 @@ function parseEntries(
 function parseContainer(
   container: Container,
   prefix: string,
+  suffix: string,
   ids: string[] = [],
 ) {
   const dictionary: Record<string, string> = {};
@@ -219,7 +217,7 @@ function parseContainer(
   }
   for (const id of ids) {
     const value = container.content[id];
-    const key = `${prefix}/${id}`;
+    const key = `${prefix}${id}${suffix}`;
     dictionary[key] = `${value}`;
   }
   return dictionary;

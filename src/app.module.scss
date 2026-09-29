@@ -42,9 +42,10 @@
 .form-item {
   @extend .row;
   gap: 8px;
+  align-items: center;
 
   .form-item-label {
-    //
+    display: block;
   }
 
   .form-item-value {
@@ -52,6 +53,8 @@
 
     select {
       width: 100%;
+      height: unset;
+      margin-bottom: unset;
     }
   }
 }

@@ -2,6 +2,14 @@ import { useEffect, useState } from "preact/hooks";
 import { Select, SelectProps } from "./components/select";
 import { version } from "../package.json";
 
+import enUS1 from "./i18n/dark-souls/en-US.json";
+import jaJP1 from "./i18n/dark-souls/ja-JP.json";
+import zhCN1 from "./i18n/dark-souls/zh-CN.json";
+
+import enUS2 from "./i18n/dark-souls-2/en-US.json";
+import jaJP2 from "./i18n/dark-souls-2/ja-JP.json";
+import zhCN2 from "./i18n/dark-souls-2/zh-CN.json";
+
 import enUS3 from "./i18n/dark-souls-3/en-US.json";
 import jaJP3 from "./i18n/dark-souls-3/ja-JP.json";
 import zhCN3 from "./i18n/dark-souls-3/zh-CN.json";
@@ -64,9 +72,19 @@ export function App() {
   switch (mode) {
     case "DS":
       classNames.push(styles["dark-souls"]);
+      dictionaries = {
+        "en-US": enUS1,
+        "ja-JP": jaJP1,
+        "zh-CN": zhCN1,
+      };
       break;
     case "DS2":
       classNames.push(styles["dark-souls-2"]);
+      dictionaries = {
+        "en-US": enUS2,
+        "ja-JP": jaJP2,
+        "zh-CN": zhCN2,
+      };
       break;
     case "DS3":
       classNames.push(styles["dark-souls-3"]);
@@ -103,10 +121,143 @@ export function App() {
 
   async function initializeDarkSouls() {
     console.info("正在初始化 Dark Souls Cheat Sheet");
+
+    const dictionary = dictionaries["en-US"];
+    if (dictionary == null) {
+      console.error("英文字典加载失败！");
+      return;
+    }
+
+    const mapper: Record<string, string> = {};
+    for (const [key, value] of Object.entries(dictionary)) {
+      let text = value.trim();
+      text = text.toLowerCase();
+      if (text.length > 0) {
+        mapper[text] = key;
+      }
+    }
+
+    const links = document.querySelectorAll<HTMLAnchorElement>("a");
+    const nodes = [...links];
+    for (const node of nodes) {
+      const value = node.textContent ?? "";
+      let text = value.trim();
+      switch (text) {
+        case "Patches the Hyena":
+          text = "Patches";
+          break;
+        case "Soul of (Great Wolf) Sif":
+          text = "Soul of Sif";
+          break;
+        case "Griggs":
+          text = "Griggs of Vinheim";
+          break;
+        case "Rickert":
+          text = "Rickert of Vinheim";
+          break;
+        case "Laurentius":
+          text = "Laurentius of the Great Swamp";
+          break;
+        case "Quelana":
+          text = "Quelana of Izalith";
+          break;
+        case "Petrus":
+          text = "Petrus of Thorolund";
+          break;
+        case "Reah":
+          text = "Rhea of the Thorolund";
+          break;
+        case "The Depths":
+          text = "Depths";
+          break;
+        case "Andrei":
+          text = "Blacksmith Andre";
+          break;
+        case "Vamos":
+          text = "Vamos, the Blacksmith";
+          break;
+        case "Giant":
+          text = "Giant Blacksmith";
+          break;
+      }
+      text = text.toLowerCase();
+
+      const key = mapper[text];
+      if (key != null) {
+        node.setAttribute("data-dict-key", key);
+      }
+    }
   }
 
   async function initializeDarkSouls2() {
     console.info("正在初始化 Dark Souls 2 Cheat Sheet");
+
+
+    const dictionary = dictionaries["en-US"];
+    if (dictionary == null) {
+      console.error("英文字典加载失败！");
+      return;
+    }
+
+    const mapper: Record<string, string> = {};
+    for (const [key, value] of Object.entries(dictionary)) {
+      let text = value.trim();
+      text = text.toLowerCase();
+      if (text.length > 0) {
+        mapper[text] = key;
+      }
+    }
+
+    const links = document.querySelectorAll<HTMLAnchorElement>("a");
+    const nodes = [...links];
+    for (const node of nodes) {
+      const value = node.textContent ?? "";
+      let text = value.trim();
+      switch (text) {
+        case "Patches the Hyena":
+          text = "Patches";
+          break;
+        case "Soul of (Great Wolf) Sif":
+          text = "Soul of Sif";
+          break;
+        case "Griggs":
+          text = "Griggs of Vinheim";
+          break;
+        case "Rickert":
+          text = "Rickert of Vinheim";
+          break;
+        case "Laurentius":
+          text = "Laurentius of the Great Swamp";
+          break;
+        case "Quelana":
+          text = "Quelana of Izalith";
+          break;
+        case "Petrus":
+          text = "Petrus of Thorolund";
+          break;
+        case "Reah":
+          text = "Rhea of the Thorolund";
+          break;
+        case "The Depths":
+          text = "Depths";
+          break;
+        case "Andrei":
+          text = "Blacksmith Andre";
+          break;
+        case "Vamos":
+          text = "Vamos, the Blacksmith";
+          break;
+        case "Giant":
+          text = "Giant Blacksmith";
+          break;
+      }
+      text = text.toLowerCase();
+
+      const key = mapper[text];
+      if (key != null) {
+        node.setAttribute("data-dict-key", key);
+      }
+    }
   }
 
   async function initializeDarkSouls3() {
